@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/FWSJ.iml" filepath="$PROJECT_DIR$/FWSJ.iml" />
+      <module fileurl="file://$PROJECT_DIR$/baseCommon/baseCommon.iml" filepath="$PROJECT_DIR$/baseCommon/baseCommon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fwsjsdk/fwsjsdk.iml" filepath="$PROJECT_DIR$/fwsjsdk/fwsjsdk.iml" />
+    </modules>
+  </component>
+</project>
