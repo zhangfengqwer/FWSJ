@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 21
     buildToolsVersion "25.0.3"
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 21
     }
 
     buildTypes {
@@ -25,4 +25,6 @@ dependencies {
     compile files('libs/mta-sdk-2.0.0.jar')
     compile files('libs/open_sdk_r5880.jar')
     compile files('libs/alipaySdk-20170922.jar')
+    compile 'com.zhy:okhttputils:2.0.0'
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
 }

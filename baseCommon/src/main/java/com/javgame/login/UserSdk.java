@@ -24,7 +24,7 @@ public class UserSdk {
     IActivityListener activityListener;
 
 
-    private  void sendUnityMessage(String callObj, String callFunc, String data){
+    public static  void sendUnityMessage(String callObj, String callFunc, String data){
         UnityPlayer.UnitySendMessage(callObj, callFunc, data);
     }
     public void init(Activity activity) {

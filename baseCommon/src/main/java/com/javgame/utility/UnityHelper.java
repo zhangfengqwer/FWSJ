@@ -20,6 +20,12 @@ public class UnityHelper {
         return UnityPlayerActivity.realActivity;
     }
 
+    /**
+     * 登录
+     * @param callObj unity3d中接收消息的gamaObject的名称
+     * @param callFunc unity3d中接收消息的函数名称
+     * @param data 数据格式:json
+     */
     public static void login(final String callObj, final String callFunc, final String data) {
         Log.d(TAG, " login  callObj: " + callObj + " callFunc :" + callFunc);
 
@@ -35,22 +41,25 @@ public class UnityHelper {
      * 支付方案统一入口
      *
      * @param paytype  支付类型
-     * @param data     数据格式:a=1&b=2&c=3
-     * @param callObj  unity3d中接收消息的gamaObject的名称
-     * @param callFunc unity3d中接收消息的函数名称
+     * @param data
+     * @param callObj
+     * @param callFunc
      */
     public static void pay(final String callObj, final String callFunc, final String data) {
-        LogUtil.d(TAG, " Pay " + data + " callObj " + callObj + " callFunc " + callFunc );
-
-        AliPay.payV2(callObj,callFunc);
-
-
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                IntegrationManager.getInstance().pay(paytype,data, callObj, callFunc);
-//            }
-//        });
+        LogUtil.d(TAG, " Pay " + data + " callObj " + callObj + " callFunc " + callFunc);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                IntegrationManager.getInstance().pay(data, callObj, callFunc);
+            }
+        });
     }
 
+    /**
+     * 微信分享
+     */
+    public static void wxShare(final String callObj, final String callFunc, final String data) {
+        LogUtil.d(TAG, " wxShare: " + data + " callObj :" + callObj + " callFunc :" + callFunc);
+
+    }
 }

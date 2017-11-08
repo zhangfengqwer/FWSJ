@@ -14,8 +14,6 @@ public interface IPay {
 	 * unity调用此支付接口，必须实现此接口才能支付
 	 * @param order  关于订单的参数
 	 */
-	void pay(OrderResponse orderResp);
-	
-	
-	
+	void pay(String data);
+
 }

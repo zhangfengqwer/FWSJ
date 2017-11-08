@@ -15,7 +15,6 @@ public class ActivityHelper {
 
     public void onCreate(Activity activity, Bundle savedInstanceState) {
         IntegrationManager.getInstance().init(activity);
-
     }
 
     public void onResume() {IntegrationManager.getInstance().onResume();}

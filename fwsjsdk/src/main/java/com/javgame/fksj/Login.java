@@ -1,13 +1,11 @@
-package javgame.com.fwsj;
+package com.javgame.fksj;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Message;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.alipay.sdk.app.PayTask;
 import com.javgame.Integration.IActivityListener;
 import com.javgame.login.IUser;
 import com.javgame.login.UserSdk;
@@ -15,9 +13,17 @@ import com.javgame.utility.CommonUtils;
 import com.javgame.utility.LogUtil;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.common.Constants;
+import com.tencent.mm.opensdk.modelmsg.GetMessageFromWX;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXTextObject;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
+import com.unity3d.player.UnityPlayer;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,36 +38,58 @@ import static com.javgame.utility.Constants.TAG;
  */
 
 public class Login implements IUser, IActivityListener {
-    private String AppId = "101436232";
+
+    public static IWXAPI wxApi;
     private UserInfo mInfo;
     private Tencent mTencent;
-    private String token;
-    private String expires;
-    private String openId;
+    private static String token;
+    private static String expires;
+    private static String openId;
     private String nickname;
     private String figureurl;
+    private static HashMap<String, String> map;
 
     private Activity getActivity() {
         return UserSdk.getInstance().getActivity();
     }
 
     @Override
+    public void onCreate() {
+        mTencent = Tencent.createInstance(GameConfig.QQ_APP_ID, getActivity());
+
+        //注册微信到app中
+        wxApi = WXAPIFactory.createWXAPI(getActivity(), GameConfig.WX_APP_ID, true);
+        wxApi.registerApp(GameConfig.WX_APP_ID);
+
+    }
+
+
+    @Override
     public void login(String data) {
 
         if ("weixin".equals(data)) {
             LogUtil.d(TAG, "点击wexin");
+            send2Wx();
         } else if ("qq".equals(data)) {
             LogUtil.d(TAG, "点击qq");
             doQQLogin();
         }
     }
 
+    private void send2Wx() {
+        SendAuth.Req req = new SendAuth.Req();
+        req.scope = "snsapi_userinfo";
+        req.state = "wechat_sdk_tlj";
+        wxApi.sendReq(req);
+    }
+
     private void doQQLogin() {
-        mTencent = Tencent.createInstance(AppId, getActivity());
         if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(expires) && !TextUtils.isEmpty(openId)) {
             mTencent.setAccessToken(token, expires);
             mTencent.setOpenId(openId);
             LogUtil.d(TAG, "设置openid");
+            UserSdk.getInstance().loginResult(new JSONObject(map).toString());
+            return;
         }
         mTencent.login(getActivity(), "all", loginListener);
     }
@@ -109,12 +137,13 @@ public class Login implements IUser, IActivityListener {
     };
 
     private void handlerResult() {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("appid", AppId);
-        map.put("openid", openId);
+        map = new HashMap<>();
+        map.put("appid", GameConfig.QQ_APP_ID);
+        map.put("code", openId);
         map.put("nickname", nickname);
         map.put("platform", 101 + "");
         map.put("figureurl", figureurl);
+        Log.d(TAG, new JSONObject(map).toString());
         UserSdk.getInstance().loginResult(new JSONObject(map).toString());
     }
 
@@ -160,41 +189,38 @@ public class Login implements IUser, IActivityListener {
         });
     }
 
-    @Override
-    public void onCreate() {
-
-    }
 
     @Override
     public void onPause() {
-
+        LogUtil.d(TAG, "onPause");
+        UnityPlayer.UnitySendMessage("AndroidCallBack", "OnPauseCallBack", "");
     }
 
     @Override
     public void onStart() {
-
+        LogUtil.d(TAG, "onStart");
     }
 
     @Override
     public void onRestart() {
-
+        LogUtil.d(TAG, "onRestart");
     }
 
     @Override
     public void onResume() {
-
+        LogUtil.d(TAG, "onResume");
+        UnityPlayer.UnitySendMessage("AndroidCallBack", "OnResumeCallBack", "");
     }
 
     @Override
     public void onStop() {
-
+        LogUtil.d(TAG, "onStop");
     }
 
     @Override
     public void onDestroy() {
-
+        LogUtil.d(TAG, "onDestroy");
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

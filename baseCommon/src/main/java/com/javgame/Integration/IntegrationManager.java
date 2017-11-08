@@ -45,7 +45,7 @@ public class IntegrationManager {
     public  void init(Activity activity){
         ComponentFactory.getInstance().init(activity);
         UserSdk.getInstance().init(activity);
-//        PaySdk.getInstance().Init(activity);
+        PaySdk.getInstance().Init(activity);
     }
 
     public void login(Activity activity,  String callObj,String callFunc,String data){
@@ -94,7 +94,7 @@ public class IntegrationManager {
         }
     }
 
-    public void pay(String paytype, String data, String callObj, String callFunc) {
-        PaySdk.getInstance().pay(paytype, data, callObj, callFunc);
+    public void pay( String data, String callObj, String callFunc) {
+        PaySdk.getInstance().pay(data, callObj, callFunc);
     }
 }

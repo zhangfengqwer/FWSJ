@@ -107,7 +107,7 @@ public class AndroidUtil {
      * @return
      */
     public static Drawable getDrawableResource(Context activity, String name) {
-        int id = activity.getResources().getIdentifier(name, "drawable",
+        int id = activity.getResources().getIdentifier(name, "javgame/com/fwsj/drawable",
                 activity.getPackageName());
         if (id == 0) return null;
         return activity.getResources().getDrawable(id);
@@ -120,7 +120,7 @@ public class AndroidUtil {
      * @return
      */
     public static int getDrawableResourceID(Context activity, String name) {
-        int id = activity.getResources().getIdentifier(name, "drawable",
+        int id = activity.getResources().getIdentifier(name, "javgame/com/fwsj/drawable",
                 activity.getPackageName());
         return id;
     }
